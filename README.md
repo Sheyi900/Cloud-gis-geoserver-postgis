@@ -1,9 +1,9 @@
-🌍 Cloud GIS Deployment with PostGIS + GeoServer + Docker on AWS
+# 🌍 Cloud GIS Deployment with PostGIS + GeoServer + Docker on AWS
 
 This repo demonstrates how to deploy a cloud GIS stack using AWS EC2 + Docker (GeoServer) + RDS (PostGIS).
 It provides a reproducible workflow with setup scripts, configuration notes, and screenshots.
 
-📖 Project Overview
+## 📖 Project Overview
 
 GeoServer (Docker container) → serves spatial data (WMS/WFS).
 
@@ -13,12 +13,12 @@ AWS EC2 → cloud host for Docker + GeoServer.
 
 Client (QGIS / Browser) → visualize and validate published layers.
 
-🏗️ Architecture
+## 🏗️ Architecture
 
 Flow:
 RDS (PostGIS) ⟶ EC2 (Docker + GeoServer) ⟶ Client (QGIS/Browser)
 
-⚙️ Prerequisites
+## ⚙️ Prerequisites
 
 AWS account with EC2 and RDS access.
 
@@ -26,8 +26,8 @@ SSH key pair for EC2.
 
 Basic knowledge of Docker and AWS Security Groups.
 
-🚀 Setup Workflow
-1. Launch EC2 Instance
+## 🚀 Setup Workflow
+### 1. Launch EC2 Instance
 
 Instance type: t2.micro (or higher).
 
@@ -43,26 +43,23 @@ Open ports in Security Group:
 
 📸 Screenshot: EC2 instance dashboard with security rules
 
-2. Install Docker & Create Swap
-# Update and install
+### 2. Install Docker & Create Swap
 ```bash
+# Update and install
 sudo apt update && sudo apt upgrade -y
 sudo apt install docker.io -y
-```
+
 # Add swap (needed for t2.micro)
+
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
 
-# Verify
-free -h
-
-
-📸 Screenshot: free -h showing swap enabled
-
-3. Run GeoServer Container
+### 3. Run GeoServer Container
+```  
 sudo docker run -d --name geoserver \
   -p 8080:8080 \
   -v /opt/geoserver_data:/var/local/geoserver \
@@ -70,7 +67,7 @@ sudo docker run -d --name geoserver \
   -e GEOSERVER_ADMIN_PASSWORD=geoserver \
   -e JAVA_OPTS="-Xms256m -Xmx512m" \
   kartoza/geoserver
-
+```
 
 Access UI at: http://<EC2-Public-IP>:8080/geoserver
 
@@ -78,25 +75,25 @@ Default credentials: admin / geoserver (or your custom ones)
 
 📸 Screenshot: GeoServer login page
 
-4. Setup PostGIS on AWS RDS
+### 4. Setup PostGIS on AWS RDS
 
 Launch PostgreSQL RDS instance with PostGIS extension enabled.
 
 Ensure RDS Security Group allows inbound 5432 from EC2’s SG.
 
 Connect from EC2 or local client:
-
+```
 psql -h <RDS-ENDPOINT> -U postgres -d gis
-
+```
 
 Enable PostGIS:
-
+```
 CREATE EXTENSION postgis;
-
+```
 
 📸 Screenshot: RDS console showing DB instance
 
-5. Connect GeoServer to PostGIS
+### 5. Connect GeoServer to PostGIS
 
 Login to GeoServer → Data Stores → Add new Store → PostGIS.
 
@@ -106,7 +103,7 @@ Publish a layer.
 
 📸 Screenshot: GeoServer layer preview in browser
 
-🧪 Testing
+## 🧪 Testing
 
 Load WMS/WFS service in QGIS.
 
@@ -114,7 +111,7 @@ Verify geometry loads from RDS → GeoServer → Client.
 
 📸 Screenshot: QGIS with layer loaded from GeoServer
 
-📂 Repo Structure
+## 📂 Repo Structure
 geoserver-aws-portfolio/
 │
 ├── README.md
@@ -128,7 +125,7 @@ geoserver-aws-portfolio/
 └── notes/
     └── rds-setup.md
 
-🔑 Lessons Learned
+## 🔑 Lessons Learned
 
 t2.micro needs swap to prevent GeoServer crashes.
 
@@ -136,11 +133,11 @@ Always lock down RDS access — only EC2 SG should connect.
 
 Custom admin credentials should be set during docker run.
 
-📸 Screenshots
+## 📸 Screenshots
 
 (Add all relevant screenshots here with captions)
 
-📌 Next Steps
+## 📌 Next Steps
 
 Automate deployment with Terraform or Ansible.
 
