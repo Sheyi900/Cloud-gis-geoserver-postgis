@@ -68,13 +68,9 @@ Copy code
   ```sql
   CREATE EXTENSION postgis;
 Import dataset (Natural Earth, shapefile, etc.):
-
-bash
-Copy code
 shp2pgsql -I -s 4326 data/ne_states.shp public.us_states | psql -U postgres -d gis
-2. Run GeoServer with Docker
-bash
-Copy code
+
+### 2. Run GeoServer with Docker
 docker run -d --name geoserver \
   -p 8080:8080 \
   docker.osgeo.org/geoserver:2.24.2
@@ -84,7 +80,7 @@ Username: admin
 
 Password: geoserver
 
-3. Connect GeoServer to PostGIS
+### 3. Connect GeoServer to PostGIS
 Login → Data → Stores → Add new Store → PostGIS.
 
 Enter DB credentials (local or AWS RDS).
@@ -93,22 +89,19 @@ Publish layer → Layer Preview → OpenLayers to verify.
 
 📸 Example screenshot:
 
-4. View Layer in QGIS
+### 4. View Layer in QGIS
 Add new WMS connection:
 
-arduino
-Copy code
 http://<host-ip>:8080/geoserver/wms
 Load us_states layer into QGIS.
 
 📸 Example screenshot:
 
-5. Example Spatial Queries
+### 5. Example Spatial Queries
 Inside PostGIS (gis DB):
 
-sql
-Copy code
--- Largest polygons by area
+```sql
+    -- Largest polygons by area
 SELECT name, admin, ST_Area(geom::geography) AS area_m2
 FROM public.us_states
 ORDER BY area_m2 DESC
@@ -118,6 +111,7 @@ LIMIT 5;
 SELECT name
 FROM public.us_states
 WHERE geom && ST_MakeEnvelope(-130, 24, -66, 50, 4326);
+
 🌐 Optional Cloud Setup (AWS)
 RDS: Managed PostgreSQL + PostGIS
 
