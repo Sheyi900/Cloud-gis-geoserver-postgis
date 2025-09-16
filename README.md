@@ -73,7 +73,7 @@ Access UI at: http://<EC2-Public-IP>:8080/geoserver
 
 Default credentials: admin / geoserver (or your custom ones)
 
-📸 Screenshot: GeoServer login page
+![Alt text](docs/screenshots/Geoserver_layer.png)
 
 ### 4. Setup PostGIS on AWS RDS
 
