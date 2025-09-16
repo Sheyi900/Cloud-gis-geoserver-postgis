@@ -41,7 +41,7 @@ Open ports in Security Group:
 
 5432 (Postgres, RDS only — limit to EC2 SG)
 
-📸 Screenshot: EC2 instance dashboard with security rules
+![Alt text](docs/screenshots/ec2_instance.png)
 
 ### 2. Install Docker & Create Swap
 ```bash
@@ -73,7 +73,7 @@ Access UI at: http://<EC2-Public-IP>:8080/geoserver
 
 Default credentials: admin / geoserver (or your custom ones)
 
-![Alt text](docs/screenshots/Geoserver_layer.png)
+![Alt text](docs/screenshots/Geoserver_login.png)
 
 ### 4. Setup PostGIS on AWS RDS
 
@@ -91,7 +91,7 @@ Enable PostGIS:
 CREATE EXTENSION postgis;
 ```
 
-📸 Screenshot: RDS console showing DB instance
+![Alt text](docs/screenshots/RDS_Console.png)
 
 ### 5. Connect GeoServer to PostGIS
 
@@ -101,7 +101,7 @@ Enter RDS connection details.
 
 Publish a layer.
 
-📸 Screenshot: GeoServer layer preview in browser
+![Alt text](docs/screenshots/Published_layer.png)
 
 ## 🧪 Testing
 
@@ -109,21 +109,26 @@ Load WMS/WFS service in QGIS.
 
 Verify geometry loads from RDS → GeoServer → Client.
 
-📸 Screenshot: QGIS with layer loaded from GeoServer
+![Alt text](docs/screenshots/QGIS_display.png)
 
 ## 📂 Repo Structure
 geoserver-aws-portfolio/
 │
-├── README.md
-├── docs/
-│   ├── screenshots/
-│   └── architecture-diagram.png
-├── docker/
-│   └── DockerRunCommands.sh
-├── scripts/
-│   └── setup-ec2.sh
-└── notes/
-    └── rds-setup.md
+├── README.md                     # Project overview, setup instructions, screenshots placeholders
+├── docker/                       # Docker-related scripts
+│   └── DockerRunCommands.sh      # Script to run GeoServer container
+├── scripts/                      # EC2 setup or helper scripts
+│   └── setup-ec2.sh              # Script to install Docker, create swap, etc.
+├── notes/                        # Documentation & guides
+│   └── rds-setup.md              # RDS/PostGIS setup instructions
+├── docs/                         # Visuals & screenshots
+│   ├── architecture-diagram.png  # Architecture flow diagram
+│   └── screenshots/              # Screenshots of EC2, GeoServer UI, published layers
+│       ├── ec2-instance.png
+│       ├── docker-ps.png
+│       ├── geoserver-login.png
+└──     └── geoserver-layer.png
+
 
 ## 🔑 Lessons Learned
 
@@ -133,8 +138,11 @@ Always lock down RDS access — only EC2 SG should connect.
 
 Custom admin credentials should be set during docker run.
 
-## 📸 Screenshots
-
+## 📸 More Screenshots
+Docker connection active on EC2
+![Alt text](docs/screenshots/database_connect_ec2.png)
+Database connection to EC2
+![Alt text](docs/screenshots/database_connect_ec2.png)
 (Add all relevant screenshots here with captions)
 
 ## 📌 Next Steps
